@@ -24,11 +24,11 @@ function App() {
         <Route
           path="/booking"
           render={() => (
-            <BookingLayout>
+            
               <Switch>
                 <Route  path="/" component={Booking} />
               </Switch>
-            </BookingLayout>
+           
           )}
         />
       </Switch>
