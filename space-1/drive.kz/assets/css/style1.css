@@ -1,0 +1,56 @@
+body {
+	background: linear-gradient(rgba(251, 250, 250, 0.3),rgba(0,0,0,.3)), url(gory-doroga-mashina-les.jpeg);
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-attachment: fixed;
+	font-family: sans-serif;
+}
+
+.form {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	background: #fff;
+	border-radius: 1.5rem;
+
+
+}
+
+.form h1 {
+	margin: 30px 80px;
+	padding: 0;
+	text-align: center;
+	color: rgb(2, 13, 68);
+	font-size: 30px;
+	text-transform: uppercase;
+}
+
+.input-form {
+	margin: 15px 40px;
+	text-align: center;
+
+}
+
+.input-form input {
+	padding: 10px;
+	width: 100%;
+	color: rgb(2, 13, 68);
+	font-size: 20px;
+	background: none;
+	outline: none;
+	border: 1px solid rgb(2, 13, 68);
+	box-sizing: border-box;
+}
+
+
+.button {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: rgb(2, 13, 68);
+    color: #fff;
+    padding: .50rem 2.5rem;
+    font-weight: bold;
+    border-radius: 1.5rem;
+    transition: .3s;
+  }

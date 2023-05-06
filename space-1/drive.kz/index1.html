@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="assets/css/style1.css">
+
+        <!-- =====BOX ICONS===== -->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <title>PddDrive</title>
+
+        <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+
+        <body>
+
+
+            <div class="form">
+                <h1>Введите данные</h1>
+                <div class="input-form">
+                    
+                    <input type="text" placeholder="ФИО" name="uname" required>
+                </div>
+                <div class="input-form">
+                    <input type="number" placeholder="ИИН">
+                </div>
+                <div class="input-form">
+                    <input type="tel" placeholder="Введите номер телефона" class="phone">
+                </div>
+                <div class="input-form">
+                    <input type="email" placeholder="bob@gmail.com">
+                </div>
+                <div class="input-form">
+                    <a href="index5.html" class="button"><p>Продолжить</p></a>
+                </div>
+
+
+                <script type="text/javascript">
+                    $(".phone").mask("+7(999)999-9999");
+                </script>
+                
+        </body>
+    </head>
+</html>
+
+
+
