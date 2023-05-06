@@ -1,6 +1,5 @@
 // src/pages/Home/index.js
-
-import React from 'react';
+import React from 'react'
 import { Typography } from '@mui/material';
 
 const Home = () => {

@@ -1,4 +1,4 @@
-// src/components/AppHeader/index.js
+
 
 import React from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';

@@ -1,13 +1,13 @@
 
 import './App.css';
-
-
+import AppHeader from "./components/AppHeader";
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 
 const BookingLayout = ({ children }) => {
- 
-
-
   return (
     <>
       <AppHeader/>
@@ -20,30 +20,17 @@ const BookingLayout = ({ children }) => {
 function App() {
   return (
     <Router>
-
-  
+      <Route exact path="/" component={Home} />
     <Switch>
       <Route
-        path="/"
+        path="/booking"
         render={() => (
-          <MainLayout>
+          <BookingLayout>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/appointments" component={Appointments} />
-              <Route path="/test-centers" component={TestCenters} />
-              <Route
-                    path="/test-centers"
-                    render={(props) => <TestCenterList {...props} testCenters={testCenters} />}
-        />
-              <Route
-                  path="/test-center/:id"
-                  render={(props) => {
-                  const testCenter = testCenters.find((tc) => tc.id === parseInt(props.match.params.id, 10));
-                  return testCenter ? <TestCenter {...props} testCenter={testCenter} /> : null;
-          }}
-        />
+           
+
             </Switch>
-          </MainLayout>
+          </BookingLayout>
         )}
       />
     </Switch>
