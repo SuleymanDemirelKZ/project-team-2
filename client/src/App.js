@@ -20,7 +20,14 @@ const BookingLayout = ({ children }) => {
 function App() {
   return (
     <Router>
-      <Route exact path="/" component={Home} />
+      <Route
+          path="/"
+          render={() => (
+            <div
+              dangerouslySetInnerHTML={{ __html: Home() }}
+            />
+          )}
+        />
     <Switch>
       <Route
         path="/booking"
