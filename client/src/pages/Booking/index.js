@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
 import CitySelection from '../../components/Selections/City';
@@ -7,6 +7,7 @@ import DateSelection from '../../components/Selections/Date';
 import TimeSelection from '../../components/Selections/Time';
 import PersonalDataForm from '../../components/Forms/PersonalData';
 import BookingSummary from '../../components/Summary/Booking';
+import { fetchAvailableTimes } from '../../services/api/booking';
 
 
 const Booking = () => {
@@ -16,7 +17,8 @@ const Booking = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [personalData, setPersonalData] = useState({});
   const history = useHistory();
-
+  const [availableTimes, setAvailableTimes] = useState('');
+  
   const handleCityChange = (e) => setSelectedCity(e.target.value);
   const handleTestCenterChange = (e) => setSelectedTestCenter(e.target.value);
   const handleDateChange = (e) => setSelectedDate(e.target.value);
@@ -25,6 +27,20 @@ const Booking = () => {
     setPersonalData(data);
     history.push('/summary');
   };
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const times = await fetchAvailableTimes();
+      setAvailableTimes(times);
+    };
+
+    fetchData();
+  }, []);
+
+  
+
+
+  
 
   return (
     <Router>
@@ -37,11 +53,8 @@ const Booking = () => {
             <Button color="inherit" component={Link} to="/">
               City & Test Center
             </Button>
-            <Button color="inherit" component={Link} to="/date">
-              Date
-            </Button>
-            <Button color="inherit" component={Link} to="/time">
-              Time
+            <Button color="inherit" component={Link} to="/date-time">
+              Date-Time
             </Button>
             <Button color="inherit" component={Link} to="/personal-data">
               Personal Data
@@ -49,10 +62,11 @@ const Booking = () => {
           </Toolbar>
         </AppBar>
         <Container>
+          {console.log(fetchAvailableTimes())}
           <Switch>
             <Route path="/" exact>
               <CitySelection
-                cities={['City1', 'City2', 'City3']}
+                cities={['Atyrau', 'Almaty', 'Astana']}
                 selectedCity={selectedCity}
                 onCityChange={handleCityChange}
               />
@@ -65,15 +79,13 @@ const Booking = () => {
                 onTestCenterChange={handleTestCenterChange}
               />
             </Route>
-            <Route path="/date">
+            <Route path="/date-time">
               <DateSelection
                 selectedDate={selectedDate}
                 onDateChange={handleDateChange}
               />
-              </Route>
-            <Route path="/time">
               <TimeSelection
-                availableTimes={['10:00', '11:00', '14:00']}
+                availableTimes={availableTimes}
                 selectedTime={selectedTime}
                 onTimeChange={handleTimeChange}
               />
