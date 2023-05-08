@@ -7,7 +7,7 @@ import DateSelection from '../../components/Selections/Date';
 import TimeSelection from '../../components/Selections/Time';
 import PersonalDataForm from '../../components/Forms/PersonalData';
 import BookingSummary from '../../components/Summary/Booking';
-import { fetchAvailableTimes } from '../../services/api/booking';
+import { fetchAvailableTimes, postBooking } from '../../services/api/booking';
 
 
 const Booking = () => {
@@ -23,9 +23,22 @@ const Booking = () => {
   const handleTestCenterChange = (e) => setSelectedTestCenter(e.target.value);
   const handleDateChange = (e) => setSelectedDate(e.target.value);
   const handleTimeChange = (e) => setSelectedTime(e.target.value);
-  const handlePersonalDataSubmit = (data) => {
+  const handlePersonalDataSubmit = async (data) => {
     setPersonalData(data);
-    history.push('/summary');
+    const dataForServer = 
+    {
+      city: selectedCity,
+      testCenter: selectedTestCenter,
+      date: selectedDate,
+      time: selectedTime,
+      personalData,
+    }
+
+
+     await postBooking(dataForServer)
+
+
+
   };
   
   useEffect(() => {
@@ -62,7 +75,6 @@ const Booking = () => {
           </Toolbar>
         </AppBar>
         <Container>
-          {console.log(fetchAvailableTimes())}
           <Switch>
             <Route path="/" exact>
               <CitySelection
@@ -94,6 +106,7 @@ const Booking = () => {
               <PersonalDataForm onSubmit={handlePersonalDataSubmit} />
             </Route>
             <Route path="/summary">
+              
               <BookingSummary
                 bookingData={{
                   city: selectedCity,
