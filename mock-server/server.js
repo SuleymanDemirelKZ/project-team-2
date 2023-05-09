@@ -16,7 +16,7 @@ app.post('/createBooking', (req, res) => {
     // Process the data here, e.g., save to a database or perform other operations
     
     res.json({ message: 'Data received successfully', receivedData: data });
-    console.log(req)
+    console.log();
   });
 
 const port = 5000;

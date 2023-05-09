@@ -22,11 +22,12 @@ export const postBooking = async (data) => {
         },
         body: JSON.stringify(data),
       });
-  
+      
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);
       }
-  
+      
+      console.log(JSON.stringify(data))
       const result = await response.json();
       console.log('Data submitted successfully:', result);
     } catch (error) {

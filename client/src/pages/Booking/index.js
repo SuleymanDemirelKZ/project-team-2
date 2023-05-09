@@ -23,10 +23,10 @@ const Booking = () => {
   const handleTestCenterChange = (e) => setSelectedTestCenter(e.target.value);
   const handleDateChange = (e) => setSelectedDate(e.target.value);
   const handleTimeChange = (e) => setSelectedTime(e.target.value);
-  const handlePersonalDataSubmit = async (data) => {
+  const handlePersonalDataSubmit =  async (data) => {
+    
     setPersonalData(data);
-    const dataForServer = 
-    {
+    const bookingData={
       city: selectedCity,
       testCenter: selectedTestCenter,
       date: selectedDate,
@@ -34,11 +34,7 @@ const Booking = () => {
       personalData,
     }
 
-
-     await postBooking(dataForServer)
-
-
-
+    await postBooking(bookingData)
   };
   
   useEffect(() => {
@@ -49,6 +45,7 @@ const Booking = () => {
 
     fetchData();
   }, []);
+
 
   
 
@@ -71,6 +68,9 @@ const Booking = () => {
             </Button>
             <Button color="inherit" component={Link} to="/personal-data">
               Personal Data
+            </Button>
+            <Button color="inherit" component={Link} to="/summary">
+              Summary
             </Button>
           </Toolbar>
         </AppBar>
@@ -118,6 +118,7 @@ const Booking = () => {
               />
             </Route>
           </Switch>
+
         </Container>
       </Box>
     </Router>

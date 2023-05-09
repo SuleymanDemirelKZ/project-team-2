@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 
+import { useHistory } from 'react-router-dom';
+
 const PersonalDataForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   // Add more fields as needed
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({ name, email });
+    history.push('/summary')
   };
 
   return (
