@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 import javax.persistence.*;
+
 
 @Entity
 @Table(name = "test_centers")
@@ -29,11 +32,6 @@ public class TestCenter {
     @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false)
-    private String state;
-
-    @Column(nullable = false)
-    private String zip;
-
-    // Constructors, getters, and setters
+    @OneToMany(mappedBy = "testCenter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TimeSlot> timeSlots;
 }

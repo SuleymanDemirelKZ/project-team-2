@@ -38,8 +38,6 @@ public class TestCenterServiceImpl implements TestCenterService {
             existingTestCenter.setName(testCenter.getName());
             existingTestCenter.setAddress(testCenter.getAddress());
             existingTestCenter.setCity(testCenter.getCity());
-            existingTestCenter.setState(testCenter.getState());
-            existingTestCenter.setZip(testCenter.getZip());
             return testCenterRepository.save(existingTestCenter);
         }
         return null;
@@ -49,4 +47,5 @@ public class TestCenterServiceImpl implements TestCenterService {
     public void deleteTestCenter(Long id) {
         testCenterRepository.deleteById(id);
     }
+    
 }

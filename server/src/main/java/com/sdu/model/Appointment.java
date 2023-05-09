@@ -3,7 +3,6 @@ package com.sdu.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -18,15 +17,14 @@ public class Appointment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "test_center_id", nullable = false)
-    private TestCenter testCenter;
+    @JoinColumn(name = "time_slot_id", nullable = false)
+    private TimeSlot timeSlot;
 
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

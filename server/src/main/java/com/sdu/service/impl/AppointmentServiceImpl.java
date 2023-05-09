@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -34,24 +33,14 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findAll(pageable);
     }
 
-    @Override
-    public List<Appointment> getAppointmentsByUserId(Long userId) {
-        return appointmentRepository.findByUserId(userId);
-    }
 
-    @Override
-    public List<Appointment> getAppointmentsByTestCenterId(Long testCenterId) {
-        return appointmentRepository.findByTestCenterId(testCenterId);
-    }
 
     @Override
     public Appointment updateAppointment(Long id, Appointment appointment) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
         if (optionalAppointment.isPresent()) {
             Appointment existingAppointment = optionalAppointment.get();
-            existingAppointment.setDateTime(appointment.getDateTime());
-            existingAppointment.setUser(appointment.getUser());
-            existingAppointment.setTestCenter(appointment.getTestCenter());
+            existingAppointment.setTimeSlot(appointment.getTimeSlot());
             existingAppointment.setStatus(appointment.getStatus());
             return appointmentRepository.save(existingAppointment);
         }
