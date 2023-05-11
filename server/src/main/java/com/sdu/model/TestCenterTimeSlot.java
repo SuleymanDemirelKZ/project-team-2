@@ -2,6 +2,7 @@ package com.sdu.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class TestCenterTimeSlot {
 
     @ManyToOne
     @JoinColumn(name = "test_center_id", nullable = false)
+    @JsonBackReference
     private TestCenter testCenter;
 
     private Boolean booked; 

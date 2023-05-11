@@ -4,7 +4,6 @@ package com.sdu.util;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.sdu.model.TestCenterTimeSlot;
 import com.sdu.service.TestCenterTimeSlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,14 +27,10 @@ public class TimeSlotScheduler {
             LocalDate newDay = LocalDate.now().plusDays(dayOffset); // Get the date for the next day
             
             for (TestCenter testCenter : testCenters) {
-                timeSlotService.createTimeSlotsForTestCenter(testCenter, newDay, 20);
+                timeSlotService.createTimeSlotsForTestCenter(testCenter, newDay, 27);
             }
         }
     }
 
-    public void generateTimeSlots()
-    {   
-
-    }
 
 }

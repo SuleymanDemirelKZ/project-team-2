@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestCenterTimeSlotRepository extends JpaRepository<TestCenterTimeSlot, Long> {
-    @Query("SELECT ts FROM TestCenterTimeSlot ts WHERE ts.date = ?1 AND ts.testCenter.id = ?2 AND ts NOT IN (SELECT a.timeSlot FROM Appointment a WHERE a.timeSlot.date = ?1)")
+    @Query("SELECT ts FROM TestCenterTimeSlot ts WHERE ts.date = ?1 AND ts.testCenter.id = ?2 AND ts.booked = false")
     List<TestCenterTimeSlot> findAvailableTimeSlotsByDateAndTestCenterId(LocalDate date, Long testCenterId);
 }

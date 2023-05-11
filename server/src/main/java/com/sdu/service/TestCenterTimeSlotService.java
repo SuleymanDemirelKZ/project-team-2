@@ -29,13 +29,14 @@ public class TestCenterTimeSlotService {
 
     public void createTimeSlotsForTestCenter(TestCenter testCenter, LocalDate date, int numberOfSlots) {
         LocalTime startTime = LocalTime.of(9, 0); // Assuming the test center opens at 9 AM
-        int intervalInMinutes = 30; // Assuming a 30-minute interval between slots
+        int intervalInMinutes = 20; // Assuming a 30-minute interval between slots
     
         for (int i = 0; i < numberOfSlots; i++) {
             TestCenterTimeSlot timeSlot = new TestCenterTimeSlot();
             timeSlot.setDate(date);
             timeSlot.setTime(startTime.plusMinutes(intervalInMinutes * i));
             timeSlot.setTestCenter(testCenter);
+            timeSlot.setBooked(false);
     
             timeSlotRepository.save(timeSlot);
         }
@@ -44,5 +45,8 @@ public class TestCenterTimeSlotService {
     public List<TestCenterTimeSlot> findAvailableTimeSlotsByDateAndTestCenterId(LocalDate date, Long testCenterId) {
         return timeSlotRepository.findAvailableTimeSlotsByDateAndTestCenterId(date, testCenterId);
     }
+
+
+
     
 }

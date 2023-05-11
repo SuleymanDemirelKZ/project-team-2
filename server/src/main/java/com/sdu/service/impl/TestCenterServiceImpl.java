@@ -2,6 +2,7 @@ package com.sdu.service.impl;
 
 
 import com.sdu.model.TestCenter;
+import com.sdu.payload.testcenter.request.TestCenterRequestDTO;
 import com.sdu.repository.TestCenterRepository;
 import com.sdu.service.TestCenterService;
 import com.sdu.util.TimeSlotScheduler;
@@ -20,13 +21,26 @@ public class TestCenterServiceImpl implements TestCenterService {
     @Autowired
     private TimeSlotScheduler timeSlotScheduler;
 
+//        timeSlotScheduler.generateTimeSlotsForNextTenDays();
 
     @Override
-    public TestCenter createTestCenter(TestCenter testCenter) {
-//        MED: I don't think that it's works
-        testCenter.setTimeSlots(testCenter.getTimeSlots());
-        timeSlotScheduler.generateTimeSlotsForNextTenDays();
-        return testCenterRepository.save(testCenter);
+    public TestCenter createTestCenter(TestCenterRequestDTO testCenterRequestDTO) {
+
+//        TestCenter testCenter = TestCenter.builder()
+//                .address(testCenterRequestDTO.getAddress())
+//                .name(testCenterRequestDTO.getName())
+//                .city(testCenterRequestDTO.getCity()).build();
+
+
+        return testCenterRepository.save(TestCenter.builder()
+                .address(testCenterRequestDTO.getAddress())
+                .name(testCenterRequestDTO.getName())
+                .city(testCenterRequestDTO.getCity())
+                        .state(testCenterRequestDTO.getState())
+                        .zip(testCenterRequestDTO.getZip())
+                .build());
+
+
     }
 
     @Override

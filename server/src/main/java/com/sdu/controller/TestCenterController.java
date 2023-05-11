@@ -2,7 +2,9 @@ package com.sdu.controller;
 
 
 import com.sdu.model.TestCenter;
+import com.sdu.payload.testcenter.request.TestCenterRequestDTO;
 import com.sdu.service.TestCenterService;
+import com.sdu.util.TimeSlotScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,18 @@ public class TestCenterController {
     @Autowired
     private TestCenterService testCenterService;
 
+
+    @Autowired
+    private TimeSlotScheduler timeSlotScheduler;
     @PostMapping
-    public ResponseEntity<TestCenter> createTestCenter(@RequestBody TestCenter testCenter) {
-        return new ResponseEntity<>(testCenterService.createTestCenter(testCenter), HttpStatus.CREATED);
+    public ResponseEntity<TestCenter> createTestCenter(@RequestBody TestCenterRequestDTO testCenterRequestDTO) {
+        return new ResponseEntity<>(testCenterService.createTestCenter(testCenterRequestDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping ("/generate-time-slots")
+    public ResponseEntity<?>  generateTimeSlots() {
+        timeSlotScheduler.generateTimeSlotsForNextTenDays();
+        return ResponseEntity.ok("Maybe normal: )) ");
     }
 
     @GetMapping("/{id}")
