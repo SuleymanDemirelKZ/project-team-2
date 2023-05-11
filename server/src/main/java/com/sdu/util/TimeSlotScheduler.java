@@ -4,17 +4,18 @@ package com.sdu.util;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.sdu.model.TestCenterTimeSlot;
+import com.sdu.service.TestCenterTimeSlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.sdu.model.TestCenter;
 import com.sdu.repository.TestCenterRepository;
-import com.sdu.service.TimeSlotService;
 @Component
 public class TimeSlotScheduler {
     @Autowired
-    private TimeSlotService timeSlotService;
+    private TestCenterTimeSlotService timeSlotService;
 
     @Autowired
     private TestCenterRepository testCenterRepository;
@@ -31,4 +32,10 @@ public class TimeSlotScheduler {
             }
         }
     }
+
+    public void generateTimeSlots()
+    {   
+
+    }
+
 }

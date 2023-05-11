@@ -4,6 +4,8 @@ package com.sdu.service.impl;
 import com.sdu.model.TestCenter;
 import com.sdu.repository.TestCenterRepository;
 import com.sdu.service.TestCenterService;
+import com.sdu.util.TimeSlotScheduler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,15 @@ public class TestCenterServiceImpl implements TestCenterService {
     @Autowired
     private TestCenterRepository testCenterRepository;
 
+    @Autowired
+    private TimeSlotScheduler timeSlotScheduler;
+
+
     @Override
     public TestCenter createTestCenter(TestCenter testCenter) {
+//        MED: I don't think that it's works
+        testCenter.setTimeSlots(testCenter.getTimeSlots());
+        timeSlotScheduler.generateTimeSlotsForNextTenDays();
         return testCenterRepository.save(testCenter);
     }
 
@@ -47,5 +56,5 @@ public class TestCenterServiceImpl implements TestCenterService {
     public void deleteTestCenter(Long id) {
         testCenterRepository.deleteById(id);
     }
-    
+
 }

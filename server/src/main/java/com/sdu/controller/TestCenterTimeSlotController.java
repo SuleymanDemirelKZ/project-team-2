@@ -1,6 +1,8 @@
 package com.sdu.controller;
 
 
+import com.sdu.model.TestCenterTimeSlot;
+import com.sdu.service.TestCenterTimeSlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdu.model.TimeSlot;
-import com.sdu.service.TimeSlotService;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,14 +19,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/time-slots")
-public class TimeSlotController {
+public class TestCenterTimeSlotController {
     // Autowired services
 
     @Autowired
-    private  TimeSlotService timeSlotService;
+    private TestCenterTimeSlotService timeSlotService;
 
     @GetMapping("/available")
-    public List<TimeSlot> getAvailableTimeSlotsByDateAndTestCenterId(
+    public List<TestCenterTimeSlot> getAvailableTimeSlotsByDateAndTestCenterId(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam("testCenterId") Long testCenterId) {
         return timeSlotService.findAvailableTimeSlotsByDateAndTestCenterId(date, testCenterId);

@@ -18,7 +18,7 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "time_slot_id", nullable = false)
-    private TimeSlot timeSlot;
+    private TestCenterTimeSlot timeSlot;
 
     @Column(nullable = false)
     private String name;

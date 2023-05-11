@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Entity
-public class TimeSlot {
+public class TestCenterTimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,5 +28,6 @@ public class TimeSlot {
     @JoinColumn(name = "test_center_id", nullable = false)
     private TestCenter testCenter;
 
-    // Constructors, getters, and setters
+    private Boolean booked; 
+    
 }

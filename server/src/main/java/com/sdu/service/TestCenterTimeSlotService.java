@@ -2,27 +2,28 @@ package com.sdu.service;
 
 
 
+import com.sdu.model.TestCenterTimeSlot;
+import com.sdu.repository.TestCenterTimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdu.model.TestCenter;
-import com.sdu.model.TimeSlot;
-import com.sdu.repository.TimeSlotRepository;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 @Service
-public class TimeSlotService {
+public class TestCenterTimeSlotService {
     @Autowired
-    private TimeSlotRepository timeSlotRepository;
+    private TestCenterTimeSlotRepository timeSlotRepository;
 
-    public TimeSlot saveTimeSlot(TimeSlot timeSlot) {
+    public TestCenterTimeSlot saveTestCenterTimeSlot(TestCenterTimeSlot timeSlot) {
         return timeSlotRepository.save(timeSlot);
     }
 
-    public List<TimeSlot> findAllTimeSlots() {
+    public List<TestCenterTimeSlot> findAllTimeSlots() {
         return timeSlotRepository.findAll();
     }
 
@@ -31,7 +32,7 @@ public class TimeSlotService {
         int intervalInMinutes = 30; // Assuming a 30-minute interval between slots
     
         for (int i = 0; i < numberOfSlots; i++) {
-            TimeSlot timeSlot = new TimeSlot();
+            TestCenterTimeSlot timeSlot = new TestCenterTimeSlot();
             timeSlot.setDate(date);
             timeSlot.setTime(startTime.plusMinutes(intervalInMinutes * i));
             timeSlot.setTestCenter(testCenter);
@@ -40,7 +41,7 @@ public class TimeSlotService {
         }
     }
 
-    public List<TimeSlot> findAvailableTimeSlotsByDateAndTestCenterId(LocalDate date, Long testCenterId) {
+    public List<TestCenterTimeSlot> findAvailableTimeSlotsByDateAndTestCenterId(LocalDate date, Long testCenterId) {
         return timeSlotRepository.findAvailableTimeSlotsByDateAndTestCenterId(date, testCenterId);
     }
     

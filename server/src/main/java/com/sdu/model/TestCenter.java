@@ -33,5 +33,5 @@ public class TestCenter {
     private String city;
 
     @OneToMany(mappedBy = "testCenter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TimeSlot> timeSlots;
+    private List<TestCenterTimeSlot> timeSlots;
 }
