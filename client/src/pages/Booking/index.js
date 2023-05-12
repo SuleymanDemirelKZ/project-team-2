@@ -8,6 +8,8 @@ import TimeSelection from '../../components/Selections/Time';
 import PersonalDataForm from '../../components/Forms/PersonalData';
 import BookingSummary from '../../components/Summary/Booking';
 import { fetchAvailableTimes, postBooking } from '../../services/api/booking';
+import { getTestCenters } from '../../services/api/testCenters';
+import DateTimeSelection from '../../components/DateTimeSelection';
 
 
 const Booking = () => {
@@ -18,7 +20,7 @@ const Booking = () => {
   const [personalData, setPersonalData] = useState({});
   const history = useHistory();
   const [availableTimes, setAvailableTimes] = useState('');
-  
+  const [testCenters, setTestCenters] = useState([])
   const handleCityChange = (e) => setSelectedCity(e.target.value);
   const handleTestCenterChange = (e) => setSelectedTestCenter(e.target.value);
   const handleDateChange = (e) => setSelectedDate(e.target.value);
@@ -37,16 +39,39 @@ const Booking = () => {
     await postBooking(bookingData)
   };
   
-  useEffect(() => {
-    const fetchData = async () => {
-      const times = await fetchAvailableTimes();
-      setAvailableTimes(times);
-    };
+  useEffect (() => 
+  {
+    const fetchData = async() =>
+     {
+      const testCenters = await getTestCenters();
+      setTestCenters(testCenters)
+     }
+    
+     fetchData()
+     
+  }, [])
 
-    fetchData();
-  }, []);
 
 
+  
+    // useEffect(() => {
+    //   const fetchData = async () => {
+
+    //     let specificDate = new Date(2023, 4, 14);
+    //     let todaysDate = specificDate.toISOString().split('T')[0];
+    //     const times = await fetchAvailableTimes(todaysDate ,selectedTestCenter);
+    //     setAvailableTimes(times);
+    //   };
+  
+    //   fetchData();
+    // }, [selectedTestCenter]);
+  
+  
+
+ 
+
+
+  
   
 
 
@@ -83,16 +108,15 @@ const Booking = () => {
                 onCityChange={handleCityChange}
               />
               <TestCenterSelection
-                testCenters={[
-                  { id: 1, name: 'Test Center 1' },
-                  { id: 2, name: 'Test Center 2' },
-                ]}
+                testCenters={testCenters}
                 selectedTestCenter={selectedTestCenter}
                 onTestCenterChange={handleTestCenterChange}
               />
+
+          <Button> Next</Button>
             </Route>
             <Route path="/date-time">
-              <DateSelection
+              {/* <DateSelection
                 selectedDate={selectedDate}
                 onDateChange={handleDateChange}
               />
@@ -100,7 +124,11 @@ const Booking = () => {
                 availableTimes={availableTimes}
                 selectedTime={selectedTime}
                 onTimeChange={handleTimeChange}
-              />
+              /> */}
+
+              <DateTimeSelection>
+
+              </DateTimeSelection>
             </Route>
             <Route path="/personal-data">
               <PersonalDataForm onSubmit={handlePersonalDataSubmit} />
@@ -118,8 +146,9 @@ const Booking = () => {
               />
             </Route>
           </Switch>
-
+          
         </Container>
+       
       </Box>
     </Router>
   );

@@ -144,7 +144,10 @@ const testCenters = [
   ];
   export const getTestCenters = async () => {
     try {
-      return testCenters;
+        const response = await fetch('http://localhost:8080/api/testcenters');
+        const data = await response.json();
+        console.log(data)
+        return data
     } catch (error) {
       console.error('Error fetching test centers:', error);
       throw error;

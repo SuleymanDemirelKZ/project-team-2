@@ -3,6 +3,7 @@ package com.sdu.service.impl;
 
 import com.sdu.model.TestCenter;
 import com.sdu.payload.testcenter.request.TestCenterRequestDTO;
+import com.sdu.payload.testcenter.response.TestCenterResponseDTO;
 import com.sdu.repository.TestCenterRepository;
 import com.sdu.service.TestCenterService;
 import com.sdu.util.TimeSlotScheduler;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TestCenterServiceImpl implements TestCenterService {
@@ -49,10 +51,19 @@ public class TestCenterServiceImpl implements TestCenterService {
     }
 
     @Override
-    public List<TestCenter> getAllTestCenters() {
-        return testCenterRepository.findAll();
-    }
+    public List<TestCenterResponseDTO> getAllTestCenters() {
 
+        List<TestCenter> testCenters = testCenterRepository.findAll();
+        return testCenters.stream().map(
+                testCenter -> {
+                    return TestCenterResponseDTO.builder()
+                              .Id(testCenter.getId())
+                           .address(testCenter.getAddress())
+                           .name(testCenter.getName())
+                           .city(testCenter.getCity()).build();
+                }
+        ).collect(Collectors.toList());
+    }
     @Override
     public TestCenter updateTestCenter(Long id, TestCenter testCenter) {
         Optional<TestCenter> optionalTestCenter = testCenterRepository.findById(id);

@@ -1,19 +1,12 @@
-import React from 'react';
-import { TextField } from '@mui/material';
+import * as React from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
-const DateSelection = ({ selectedDate, onDateChange }) => {
+export default function BasicDateCalendar() {
   return (
-    <TextField
-      label="Date"
-      type="date"
-      value={selectedDate}
-      onChange={onDateChange}
-      variant="outlined"
-      InputLabelProps={{
-        shrink: true,
-      }}
-    />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateCalendar />
+    </LocalizationProvider>
   );
-};
-
-export default DateSelection;
+}

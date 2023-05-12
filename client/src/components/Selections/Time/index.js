@@ -1,15 +1,101 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Button } from '@mui/material';
+import { green, grey } from '@mui/material/colors';
 
-const TimeSelection = ({ availableTimes, selectedTime, onTimeChange }) => {
+const times = [
+  { time: "00:00", isBooked: false },
+  { time: "01:00", isBooked: true },
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+  { time: "00:00", isBooked: false },
+  { time: "01:00", isBooked: true },
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+  { time: "00:00", isBooked: false },
+  { time: "01:00", isBooked: true },
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+  { time: "00:00", isBooked: false },
+  { time: "01:00", isBooked: true },
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  { time: "01:00", isBooked: true },
+
+  // ...and so on up to "23:00"
+];
+
+const TimeSelection = () => {
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const selectTime = (time) => {
+    if (!time.isBooked) {
+      setSelectedTime(time.time);
+      // Do something with the selected time
+    }
+  };
+
   return (
-    <select value={selectedTime} onChange={onTimeChange}>
-      <option value="">Select a time</option>
-      {availableTimes.map((time) => (
-        <option key={time} value={time}>
-          {time}
-        </option>
+    <div>
+      {times.map((timeObj) => (
+        <Button 
+          key={timeObj.time} 
+          onClick={() => selectTime(timeObj)}
+          style={{
+            backgroundColor: timeObj.isBooked ? green[500] : grey[500],
+            color: 'white',
+            marginRight: '10px',
+            marginBottom: '10px',
+          }}
+          disabled={!timeObj.isBooked}
+        >
+          {timeObj.time}
+        </Button>
       ))}
-    </select>
+      {selectedTime && <p>Selected time: {selectedTime}</p>}
+    </div>
   );
 };
 

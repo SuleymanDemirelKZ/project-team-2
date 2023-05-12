@@ -20,12 +20,20 @@ import java.util.List;
 // Other imports and controller annotations
 
 @RestController
-@RequestMapping("/time-slots")
+@RequestMapping("/api/time-slots")
 public class TestCenterTimeSlotController {
     // Autowired services
 
     @Autowired
     private TestCenterTimeSlotService timeSlotService;
+
+//    @GetMapping("/available")
+//    public ResponseEntity<List<TestCenterTimeSlot>> getAvailableTimeSlotsByDateAndTestCenterId(
+//            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+//            @RequestParam("testCenterId") Long testCenterId) {
+//        List<TestCenterTimeSlot> list = timeSlotService.findAvailableTimeSlotsByDateAndTestCenterId(date, testCenterId);
+//        return ResponseEntity.ok(list);
+//    }
 
     @GetMapping("/available")
     public ResponseEntity<List<TestCenterTimeSlot>> getAvailableTimeSlotsByDateAndTestCenterId(

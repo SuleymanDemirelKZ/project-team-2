@@ -3,6 +3,7 @@ package com.sdu.controller;
 
 import com.sdu.model.TestCenter;
 import com.sdu.payload.testcenter.request.TestCenterRequestDTO;
+import com.sdu.payload.testcenter.response.TestCenterResponseDTO;
 import com.sdu.service.TestCenterService;
 import com.sdu.util.TimeSlotScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class TestCenterController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TestCenter>> getAllTestCenters(){
-        List<TestCenter> testCenters = testCenterService.getAllTestCenters();
+    public ResponseEntity<List<TestCenterResponseDTO>> getAllTestCenters(){
+        List<TestCenterResponseDTO> testCenters = testCenterService.getAllTestCenters();
         return new ResponseEntity<>(testCenters, HttpStatus.OK);
     }
 
