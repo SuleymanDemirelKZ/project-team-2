@@ -2,47 +2,48 @@ import React, { useEffect, useState } from 'react';
 import DateSelection from '../Selections/Date';
 import TimeSelection from '../Selections/Time';
 import BasicDateCalendar from '../Selections/Date';
+import { Grid } from '@mui/material';
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { fetchAvailableTimes } from '../../services/api/booking';
 
-const DateTimeSelection = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
+const DateTimeSelection = ({onDateChange}) => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
 
     
 
-//    useEffect(() => {
-//       const fetchData = async () => {
-
-//         let specificDate = new Date(2023, 4, 14);
-//         let todaysDate = specificDate.toISOString().split('T')[0];
-//         const times = await fetchAvailableTimes(todaysDate ,selectedTestCenter);
-//         setAvailableTimes(times);
-//       };
-  
-//       fetchData();
-//     }, [selectedTestCenter]);
-  
-
   useEffect(() => {
-    // if (selectedDate && selectedTime) {
-    //   console.log(`Selected date is ${selectedDate} and time is ${selectedTime}`);
-    //   // Perform some operations based on the selected date and time
-    // }
+    let dateOnly = selectedDate.toISOString().split("T")[0];
+    fetchAvailableTimes(dateOnly, 1)
+  }, [selectedDate]);
 
-    const fetchData = async () => {
-
-        const times = await fetchAvailableTimes(selectedDate ,selectedTestCenter);
-        setAvailableTimes(times);
-      };
-
-      fetchData
-  }, [selectedDate]);  // Runs whenever selectedDate or selectedTime changes
+  const disablePastDates = (date) => {
+    // Return true if the date is before the current date, which will disable it
+    return date < new Date();
+  };
 
   return (
-    <div>
-      {/* <DateSelection selectedDate ={selectedDate} onDateSelect={setSelectedDate} /> */}
-      <BasicDateCalendar/>
-      <TimeSelection  />
-    </div>
+      <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      style={{ minHeight: '100vh' }}  // Set to full viewport height
+    >
+        <Grid item>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+                date = {selectedDate}
+                onChange = {onDateChange}
+                shouldDisableDate={disablePastDates}
+            
+            />
+        </LocalizationProvider>
+        </Grid>
+      
+      </Grid>
+   
   );
 };
 

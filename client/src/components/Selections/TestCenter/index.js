@@ -5,10 +5,12 @@ const TestCenterSelection = ({ testCenters, selectedTestCenter, onTestCenterChan
   return (
     <TextField
       select
-      label="Test Center"
+      label="Выбирай Тестовый Центр"
       value={selectedTestCenter}
+      placeholder='Выбирай Тестовый Центр'
       onChange={onTestCenterChange}
       variant="outlined"
+      sx={{ width: '250px' }}
     >
       {testCenters.map((testCenter) => (
         <MenuItem key={testCenter.id} value={testCenter.id}>

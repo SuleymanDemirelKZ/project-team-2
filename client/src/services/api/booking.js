@@ -4,12 +4,13 @@ export const fetchAvailableTimes = async (date, testCenter) => {
       
       let params = {
         date: date,
-        testCenterId: testCenter-1
+        testCenterId: testCenter
       }
       Object.keys(params).forEach(key => serverUrl.searchParams.append(key, params[key]))
 
       const response = await fetch(serverUrl);
-      const data = await response.json(); 
+      const data =  await response.json(); 
+      console.log(serverUrl)
       console.log(data)
       return data
     

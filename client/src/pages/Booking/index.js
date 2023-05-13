@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
-import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from '@mui/material';
 import CitySelection from '../../components/Selections/City';
 import TestCenterSelection from '../../components/Selections/TestCenter';
 import DateSelection from '../../components/Selections/Date';
@@ -12,14 +12,54 @@ import { getTestCenters } from '../../services/api/testCenters';
 import DateTimeSelection from '../../components/DateTimeSelection';
 
 
+const DateTestTimeSlotsWrapper = ({date, testCenter}) => 
+{
+
+
+  const [selectedDate, setSelectedDate] = useState(date)
+  const [timeSlots, setTimeSlots] = useState('')
+  // const [selectedTime, setSelectedTime] = useState(null)
+  useEffect(() => 
+  {   
+    const fetchData = async () =>
+    {
+      if(testCenter)
+      {
+        const testCenterId = testCenter.id
+        let dateOnly = selectedDate.toISOString().split("T")[0];
+        let timeSlots =  await fetchAvailableTimes(dateOnly, testCenterId)
+        setTimeSlots(timeSlots)  
+      }
+    }
+   fetchData();
+  }, [selectedDate])
+  
+  const handleDateChange = (newValue) =>
+  {
+    setSelectedDate(newValue);
+  }
+
+  // const handleTimeChange = (time) =>{
+  //   setSelectedTime(time)
+  // }
+  return (
+    <div>
+      <DateTimeSelection onDateChange = {handleDateChange}/>
+       <TimeSelection times = {timeSlots}  />
+    </div>
+  
+  )
+}
+
+
+
 const Booking = () => {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedTestCenter, setSelectedTestCenter] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [personalData, setPersonalData] = useState({});
-  const history = useHistory();
-  const [availableTimes, setAvailableTimes] = useState('');
+  const [availableTimes, setAvailableTimes] = useState([]);
   const [testCenters, setTestCenters] = useState([])
   const handleCityChange = (e) => setSelectedCity(e.target.value);
   const handleTestCenterChange = (e) => setSelectedTestCenter(e.target.value);
@@ -54,24 +94,7 @@ const Booking = () => {
 
 
   
-    // useEffect(() => {
-    //   const fetchData = async () => {
 
-    //     let specificDate = new Date(2023, 4, 14);
-    //     let todaysDate = specificDate.toISOString().split('T')[0];
-    //     const times = await fetchAvailableTimes(todaysDate ,selectedTestCenter);
-    //     setAvailableTimes(times);
-    //   };
-  
-    //   fetchData();
-    // }, [selectedTestCenter]);
-  
-  
-
- 
-
-
-  
   
 
 
@@ -99,21 +122,31 @@ const Booking = () => {
             </Button>
           </Toolbar>
         </AppBar>
-        <Container>
+        <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={3} 
+      style={{ minHeight: '100vh' }}  // Set to full viewport height
+    >
           <Switch>
             <Route path="/" exact>
+            <Grid item>
               <CitySelection
                 cities={['Atyrau', 'Almaty', 'Astana']}
                 selectedCity={selectedCity}
                 onCityChange={handleCityChange}
               />
+              </Grid>
+              <Grid item>
               <TestCenterSelection
                 testCenters={testCenters}
                 selectedTestCenter={selectedTestCenter}
                 onTestCenterChange={handleTestCenterChange}
               />
-
-          <Button> Next</Button>
+            </Grid>
+          <Button>Дальше</Button>
             </Route>
             <Route path="/date-time">
               {/* <DateSelection
@@ -125,10 +158,13 @@ const Booking = () => {
                 selectedTime={selectedTime}
                 onTimeChange={handleTimeChange}
               /> */}
+            <Grid item>
+              
+              <DateTestTimeSlotsWrapper  date = {new Date()} testCenter={testCenters[selectedTestCenter-1]}>
 
-              <DateTimeSelection>
-
-              </DateTimeSelection>
+              </DateTestTimeSlotsWrapper>
+          
+                </Grid>
             </Route>
             <Route path="/personal-data">
               <PersonalDataForm onSubmit={handlePersonalDataSubmit} />
@@ -147,7 +183,7 @@ const Booking = () => {
             </Route>
           </Switch>
           
-        </Container>
+          </Grid>
        
       </Box>
     </Router>
