@@ -10,72 +10,43 @@ import BookingSummary from '../../components/Summary/Booking';
 import { fetchAvailableTimes, postBooking } from '../../services/api/booking';
 import { getTestCenters } from '../../services/api/testCenters';
 import DateTimeSelection from '../../components/DateTimeSelection';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 
 
-const DateTestTimeSlotsWrapper = ({date, testCenter}) => 
-{
-
-
-  const [selectedDate, setSelectedDate] = useState(date)
-  const [timeSlots, setTimeSlots] = useState('')
-  // const [selectedTime, setSelectedTime] = useState(null)
-  useEffect(() => 
-  {   
-    const fetchData = async () =>
-    {
-      if(testCenter)
-      {
-        const testCenterId = testCenter.id
-        let dateOnly = selectedDate.toISOString().split("T")[0];
-        let timeSlots =  await fetchAvailableTimes(dateOnly, testCenterId)
-        setTimeSlots(timeSlots)  
-      }
-    }
-   fetchData();
-  }, [selectedDate])
-  
-  const handleDateChange = (newValue) =>
-  {
-    setSelectedDate(newValue);
-  }
-
-  // const handleTimeChange = (time) =>{
-  //   setSelectedTime(time)
-  // }
-  return (
-    <div>
-      <DateTimeSelection onDateChange = {handleDateChange}/>
-       <TimeSelection times = {timeSlots}  />
-    </div>
-  
-  )
-}
 
 
 
 const Booking = () => {
   const [selectedCity, setSelectedCity] = useState('');
-  const [selectedTestCenter, setSelectedTestCenter] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTestCenter, setSelectedTestCenter] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('');
   const [personalData, setPersonalData] = useState({});
-  const [availableTimes, setAvailableTimes] = useState([]);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState({})
+  const [timeSlots, setTimeSlots] = useState([])
   const [testCenters, setTestCenters] = useState([])
   const handleCityChange = (e) => setSelectedCity(e.target.value);
   const handleTestCenterChange = (e) => setSelectedTestCenter(e.target.value);
-  const handleDateChange = (e) => setSelectedDate(e.target.value);
+  const handleDateChange = (date) => setSelectedDate(date);
   const handleTimeChange = (e) => setSelectedTime(e.target.value);
+  const handleTimeSlotConfig = (ts) => setSelectedTimeSlot(ts)
+
+  const disablePastDates = (date) => {
+    // Return true if the date is before the current date, which will disable it
+    return date < new Date();
+  };
   const handlePersonalDataSubmit =  async (data) => {
     
     setPersonalData(data);
     const bookingData={
       city: selectedCity,
       testCenter: selectedTestCenter,
-      date: selectedDate,
-      time: selectedTime,
+      date: selectedDate.toISOString(),
+      timeSlot: selectedTimeSlot.time,
       personalData,
     }
-
+    
     await postBooking(bookingData)
   };
   
@@ -90,6 +61,23 @@ const Booking = () => {
      fetchData()
      
   }, [])
+
+
+  useEffect(() => 
+  {   
+    const fetchData = async () =>
+    {
+      if(selectedTestCenter && selectedDate)
+      {
+        const testCenterId = testCenters[selectedTestCenter-1].id
+        let dateOnly = selectedDate.toISOString().split("T")[0];
+        let timeSlots =  await fetchAvailableTimes(dateOnly, testCenterId)
+        setTimeSlots(timeSlots)  
+      }
+    }
+   fetchData();
+  }, [selectedTestCenter, selectedDate])
+
 
 
 
@@ -146,23 +134,23 @@ const Booking = () => {
                 onTestCenterChange={handleTestCenterChange}
               />
             </Grid>
-          <Button>Дальше</Button>
+           <Button>Дальше</Button>
             </Route>
             <Route path="/date-time">
-              {/* <DateSelection
-                selectedDate={selectedDate}
-                onDateChange={handleDateChange}
-              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateCalendar
+                date = {selectedDate}
+                onChange = {handleDateChange}
+                shouldDisableDate={disablePastDates}
+               />
+              </LocalizationProvider> 
               <TimeSelection
-                availableTimes={availableTimes}
+                times={timeSlots}
                 selectedTime={selectedTime}
-                onTimeChange={handleTimeChange}
-              /> */}
+                onTimeSlotChange={handleTimeSlotConfig}
+              />
             <Grid item>
-              
-              <DateTestTimeSlotsWrapper  date = {new Date()} testCenter={testCenters[selectedTestCenter-1]}>
-
-              </DateTestTimeSlotsWrapper>
+            
           
                 </Grid>
             </Route>
@@ -174,9 +162,9 @@ const Booking = () => {
               <BookingSummary
                 bookingData={{
                   city: selectedCity,
-                  testCenter: selectedTestCenter,
-                  date: selectedDate,
-                  time: selectedTime,
+                  testCenter:  testCenters.name ?   'TestCenter': testCenters[selectedTestCenter-1].name,
+                  date: selectedDate.toISOString().split('T')[0],
+                  time: selectedTimeSlot.time,
                   personalData,
                 }}
               />
