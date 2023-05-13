@@ -2,6 +2,7 @@ package com.sdu.controller;
 
 
 import com.sdu.model.Appointment;
+import com.sdu.payload.appointment.AppointmentRequestDTO;
 import com.sdu.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,8 +20,8 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
-        return new ResponseEntity<>(appointmentService.createAppointment(appointment), HttpStatus.CREATED);
+    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentRequestDTO appointmentRequestDTO) {
+        return new ResponseEntity<>(appointmentService.createAppointment(appointmentRequestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

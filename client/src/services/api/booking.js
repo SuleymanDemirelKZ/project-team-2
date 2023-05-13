@@ -24,9 +24,10 @@ export const fetchAvailableTimes = async (date, testCenter) => {
 
 
 
-export const postBooking = async (data) => {
+export const createBooking = async (data) => {
     try {
-      const response = await fetch('http://localhost:5000/createBooking', {
+      console.log(data, 'my some dasta ')
+      const response = await fetch('http://localhost:8080/api/appointments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum AppointmentStatus {
     SCHEDULED("Scheduled"),
     CANCELED("Canceled"),
-    COMPLETED("Completed");
+    COMPLETED("Completed"),
+
+    WAITING_FOR_CONFIRMATION("Waiting_For_Confirmation");
 
     private final String displayValue;
 }

@@ -3,7 +3,10 @@ package com.sdu.service.impl;
 
 import com.sdu.model.Appointment;
 import com.sdu.model.AppointmentStatus;
+import com.sdu.model.TestCenterTimeSlot;
+import com.sdu.payload.appointment.AppointmentRequestDTO;
 import com.sdu.repository.AppointmentRepository;
+import com.sdu.repository.TestCenterTimeSlotRepository;
 import com.sdu.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,9 +21,21 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+
+    @Autowired
+    private TestCenterTimeSlotRepository testCenterTimeSlotRepository;
     @Override
-    public Appointment createAppointment(Appointment appointment) {
-        return appointmentRepository.save(appointment);
+    public Appointment createAppointment(AppointmentRequestDTO appointmentRequestDTO) {
+        TestCenterTimeSlot timeSlot = testCenterTimeSlotRepository.findById(appointmentRequestDTO.getTimeSlotId()).orElseThrow();
+        timeSlot.setBooked(true);
+        return appointmentRepository.save(Appointment.builder()
+                        .timeSlot(timeSlot)
+                        .email(appointmentRequestDTO.getEmail())
+                        .name(appointmentRequestDTO.getName())
+                        .status(AppointmentStatus.WAITING_FOR_CONFIRMATION)
+                        .build()
+
+                );
     }
 
     @Override

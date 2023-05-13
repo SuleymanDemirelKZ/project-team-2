@@ -7,7 +7,7 @@ import DateSelection from '../../components/Selections/Date';
 import TimeSelection from '../../components/Selections/Time';
 import PersonalDataForm from '../../components/Forms/PersonalData';
 import BookingSummary from '../../components/Summary/Booking';
-import { fetchAvailableTimes, postBooking } from '../../services/api/booking';
+import { createBooking, fetchAvailableTimes } from '../../services/api/booking';
 import { getTestCenters } from '../../services/api/testCenters';
 import DateTimeSelection from '../../components/DateTimeSelection';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -38,16 +38,17 @@ const Booking = () => {
   };
   const handlePersonalDataSubmit =  async (data) => {
     
-    setPersonalData(data);
+    await setPersonalData(data);
+
+
+
     const bookingData={
-      city: selectedCity,
-      testCenter: selectedTestCenter,
-      date: selectedDate.toISOString(),
-      timeSlot: selectedTimeSlot.time,
-      personalData,
+      timeSlotId: selectedTimeSlot.id,
+      name: personalData.name,
+      email: personalData.email
     }
     
-    await postBooking(bookingData)
+    await createBooking(bookingData)
   };
   
   useEffect (() => 
@@ -162,7 +163,7 @@ const Booking = () => {
               <BookingSummary
                 bookingData={{
                   city: selectedCity,
-                  testCenter:  testCenters.name ?   'TestCenter': testCenters[selectedTestCenter-1].name,
+                  testCenter:  testCenters.name ?   testCenters[selectedTestCenter-1].name : 'TestCenter' ,
                   date: selectedDate.toISOString().split('T')[0],
                   time: selectedTimeSlot.time,
                   personalData,
