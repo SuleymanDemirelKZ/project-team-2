@@ -12,11 +12,10 @@ import { getTestCenters } from '../../services/api/testCenters';
 import DateTimeSelection from '../../components/DateTimeSelection';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
+import ProgressIndicator from '../../components/ProgressIndicator';
+import { useLocation } from 'react-router-dom';
 
-
-
-
-
+  
 const Booking = () => {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedTestCenter, setSelectedTestCenter] = useState(null);
@@ -32,6 +31,8 @@ const Booking = () => {
   const handleTimeChange = (e) => setSelectedTime(e.target.value);
   const handleTimeSlotConfig = (ts) => setSelectedTimeSlot(ts)
 
+
+  const location = useLocation();
   const disablePastDates = (date) => {
     // Return true if the date is before the current date, which will disable it
     return date < new Date();
@@ -40,15 +41,7 @@ const Booking = () => {
     
     await setPersonalData(data);
 
-
-
-    const bookingData={
-      timeSlotId: selectedTimeSlot.id,
-      name: personalData.name,
-      email: personalData.email
-    }
-    
-    await createBooking(bookingData)
+  
   };
   
   useEffect (() => 
@@ -82,6 +75,18 @@ const Booking = () => {
 
 
 
+  const handleSummaryConfirmationButton = async() =>
+  {
+    const bookingData={
+      timeSlotId: selectedTimeSlot.id,
+      name: personalData.name,
+      email: personalData.email
+    }
+    
+    console.log('Why you here ? ')
+     await createBooking(bookingData)
+  }
+
   
 
   
@@ -112,16 +117,23 @@ const Booking = () => {
           </Toolbar>
         </AppBar>
         <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      spacing={3} 
-      style={{ minHeight: '100vh' }}  // Set to full viewport height
-    >
+         container
+         direction="column"
+         justifyContent="center"
+         alignItems="center"
+         spacing={3} 
+           style={{ minHeight: '100vh' , minWidth:'100vh' }}  // Set to full viewport height
+    >           
+
           <Switch>
             <Route path="/" exact>
+              <Grid item>
+              <ProgressIndicator activeStep={1} />
+              </Grid>
+
             <Grid item>
+
+
               <CitySelection
                 cities={['Atyrau', 'Almaty', 'Astana']}
                 selectedCity={selectedCity}
@@ -135,39 +147,50 @@ const Booking = () => {
                 onTestCenterChange={handleTestCenterChange}
               />
             </Grid>
-           <Button>Дальше</Button>
+           <Button component={Link} to="/date-time">Дальше</Button>
             </Route>
             <Route path="/date-time">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Grid item>
+              <ProgressIndicator activeStep={2} />
+              </Grid>
+
+
+            <Grid item>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateCalendar
                 date = {selectedDate}
                 onChange = {handleDateChange}
                 shouldDisableDate={disablePastDates}
                />
-              </LocalizationProvider> 
+              </LocalizationProvider>
+            </Grid>
+              <Grid item>
               <TimeSelection
                 times={timeSlots}
                 selectedTime={selectedTime}
                 onTimeSlotChange={handleTimeSlotConfig}
               />
-            <Grid item>
-            
-          
-                </Grid>
+              </Grid>
+             
+         
             </Route>
             <Route path="/personal-data">
+            <Grid item>
+              <ProgressIndicator activeStep={3} />
+              </Grid>
               <PersonalDataForm onSubmit={handlePersonalDataSubmit} />
             </Route>
             <Route path="/summary">
               
               <BookingSummary
-                bookingData={{
+                bookingDetails={{
                   city: selectedCity,
                   testCenter:  testCenters.name ?   testCenters[selectedTestCenter-1].name : 'TestCenter' ,
                   date: selectedDate.toISOString().split('T')[0],
                   time: selectedTimeSlot.time,
                   personalData,
                 }}
+                onClickSummary = {handleSummaryConfirmationButton}
               />
             </Route>
           </Switch>

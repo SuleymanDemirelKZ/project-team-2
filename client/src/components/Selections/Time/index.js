@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
 import { useHistory } from 'react-router-dom';
 
@@ -20,7 +20,10 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
   };
 
   return (
-    <Box>
+    <Box gap={2}>
+      <Grid spacing={2}>
+
+      
       {times.map((timeSlot, index) => (
         <Button
           key={index}
@@ -28,6 +31,7 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
           onClick={() => handleTimeClick(timeSlot)}
           disabled={timeSlot.booked}
           style={{ 
+            margin: "10px",
             backgroundColor: selectedTime === timeSlot ? 'blue' 
                             : timeSlot.booked ? 'gray' : 'green' 
           }}
@@ -35,6 +39,7 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
           {timeSlot.time}
         </Button>
       ))}
+      </Grid>
       <Button
         variant="contained"
         onClick={handleNextClick}
@@ -42,7 +47,9 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
       >
         Дальше
       </Button>
+      
     </Box>
+
   );
 };
 
