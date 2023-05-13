@@ -11,6 +11,8 @@ import com.sdu.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,7 +22,8 @@ import java.util.Optional;
 public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
-
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Autowired
     private TestCenterTimeSlotRepository testCenterTimeSlotRepository;
@@ -63,12 +66,34 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public void sendConfirmationEmail(Appointment appointment) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(appointment.getEmail());
+        message.setSubject("Appointment Confirmation");
+        String confirmationUrl = "http://localhost:8080/api/appointments/confirm?appointmentId=" + appointment.getId();
+        message.setText("Please confirm your appointment by clicking on the following link: " + confirmationUrl);
+        mailSender.send(message);
+    }
+
+    @Override
     public void cancelAppointment(Long id) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
         if (optionalAppointment.isPresent()) {
             Appointment existingAppointment = optionalAppointment.get();
             existingAppointment.setStatus(AppointmentStatus.CANCELED);
             appointmentRepository.save(existingAppointment);
+        }
+    }
+
+
+    public void confirmAppointment(Long appointmentId) throws Exception {
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointmentId);
+        if (optionalAppointment.isPresent()) {
+            Appointment appointment = optionalAppointment.get();
+            appointment.setStatus(AppointmentStatus.SCHEDULED);
+            appointmentRepository.save(appointment);
+        } else {
+            throw new Exception("Appointment not found.");
         }
     }
 }

@@ -21,7 +21,9 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentRequestDTO appointmentRequestDTO) {
-        return new ResponseEntity<>(appointmentService.createAppointment(appointmentRequestDTO), HttpStatus.CREATED);
+        Appointment appointment = appointmentService.createAppointment(appointmentRequestDTO);
+        appointmentService.sendConfirmationEmail(appointment);
+        return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -57,5 +59,15 @@ public class AppointmentController {
     public ResponseEntity<Void> cancelAppointment(@PathVariable Long id) {
         appointmentService.cancelAppointment(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirmAppointment(@RequestParam("appointmentId") Long appointmentId) {
+        try {
+            appointmentService.confirmAppointment(appointmentId);
+            return ResponseEntity.ok("Appointment confirmed successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error confirming the appointment.");
+        }
     }
 }
