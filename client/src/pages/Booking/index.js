@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
-import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Container, Grid, Toolbar, Typography , Card,useMediaQuery, useTheme, IconButton, Icon, Drawer, List, ListItem } from '@mui/material';
 import CitySelection from '../../components/Selections/City';
 import TestCenterSelection from '../../components/Selections/TestCenter';
 import DateSelection from '../../components/Selections/Date';
@@ -14,9 +14,33 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import ProgressIndicator from '../../components/ProgressIndicator';
 import { useLocation } from 'react-router-dom';
+import { styled } from '@mui/system';
+import logo from '../../assets/img/logo.png'
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
 
-  
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  marginBottom: `${theme.spacing(4)}px`,
+}));
+
+const StyledToolbar = styled(Toolbar)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  backgroundColor: '#fff',
+});
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  backgroundColor: '#f5f5f5',
+  padding: theme.spacing(2),
+}));
+
 const Booking = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedTestCenter, setSelectedTestCenter] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -30,7 +54,15 @@ const Booking = () => {
   const handleDateChange = (date) => setSelectedDate(date);
   const handleTimeChange = (e) => setSelectedTime(e.target.value);
   const handleTimeSlotConfig = (ts) => setSelectedTimeSlot(ts)
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const menuItems = [
+    { text: 'Content 1', onClick: () => {/* Scroll to content 1 */} },
+    { text: 'Content 2', onClick: () => {/* Scroll to content 2 */} },
+    { text: 'Content 3', onClick: () => {/* Scroll to content 3 */} },
+  ];
+
+  
 
   const location = useLocation();
   const disablePastDates = (date) => {
@@ -88,7 +120,17 @@ const Booking = () => {
   }
 
   
-
+  const drawer = (
+    <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <List>
+        {menuItems.map((item, index) => (
+          <ListItem button key={index} onClick={item.onClick}>
+            {item.text}
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
   
 
 
@@ -96,37 +138,49 @@ const Booking = () => {
 
   return (
     <Router>
-      <Box>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Booking
-            </Typography>
-            <Button color="inherit" component={Link} to="/">
-              City & Test Center
-            </Button>
-            <Button color="inherit" component={Link} to="/date-time">
-              Date-Time
-            </Button>
-            <Button color="inherit" component={Link} to="/personal-data">
-              Personal Data
-            </Button>
-            <Button color="inherit" component={Link} to="/summary">
-              Summary
-            </Button>
-          </Toolbar>
-        </AppBar>
+      <Box sx={{ 
+      border: '1px solid #ddd', 
+      boxShadow: '0px 10px 15px rgba(0, 0, 0, 0.1)', 
+      borderRadius: '10px',
+      padding: '2em',
+      backgroundColor: '#fff'
+    }}>
+
+        
+        <StyledAppBar position="fixed">
+        <StyledToolbar>
+        <img alt="Logo" src={logo} style={{height: isMobile ? '80px' : '100px', margin : "0 15px"}}/> {/* Replace 'logo.jpg' with the path to your logo image */}
+
+
+         {isMobile ? (
+          <>
+            <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setDrawerOpen(true)}>
+              <MenuIcon sx= {{ color: 'rgb(2, 13, 68)' }}/>
+            </IconButton>
+            {drawer}
+          </>
+        ) : (
+          <Box display="flex" justifyContent="flex-end" flexGrow={1}>
+            {menuItems.map((item, index) => (
+              <Button key={index} color="inherit" sx = {{ color: 'rgb(2, 13, 68)'}} onClick={item.onClick}>{item.text}</Button>
+            ))}
+          </Box>
+        )}
+
+
+        </StyledToolbar>
+      </StyledAppBar>
         <Grid
          container
          direction="column"
          justifyContent="center"
          alignItems="center"
          spacing={3} 
-           style={{ minHeight: '100vh' , minWidth:'100vh' }}  // Set to full viewport height
+           style={{ margin: isMobile ? '100px 0 ' :'159px 0' , width:'100%'}}  // Set to full viewport height
     >           
 
           <Switch>
-            <Route path="/" exact>
+            <Route path="/booking" exact>
               <Grid item>
               <ProgressIndicator activeStep={1} />
               </Grid>
@@ -150,28 +204,37 @@ const Booking = () => {
            <Button component={Link} to="/date-time">Дальше</Button>
             </Route>
             <Route path="/date-time">
+             
             <Grid item>
               <ProgressIndicator activeStep={2} />
               </Grid>
 
-
-            <Grid item>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Grid container item >
+            <Grid item  xs={12} md={6} >
+            <LocalizationProvider dateAdapter={AdapterDayjs} sx ={{margin : '0 0 0 10px'}}>
               <DateCalendar
                 date = {selectedDate}
                 onChange = {handleDateChange}
                 shouldDisableDate={disablePastDates}
+                sx={{ 
+
+                  border: '1px solid #ddd', 
+                  boxShadow: '0px 5px 5px rgba(0, 0, 0, 0.1)', 
+                  borderRadius: '10px',
+                  backgroundColor: '#fff',
+                  padding: "10px 0 "
+                }}
                />
               </LocalizationProvider>
             </Grid>
-              <Grid item>
+              <Grid item  xs={12} md={6}>
               <TimeSelection
                 times={timeSlots}
                 selectedTime={selectedTime}
                 onTimeSlotChange={handleTimeSlotConfig}
               />
               </Grid>
-             
+              </Grid>
          
             </Route>
             <Route path="/personal-data">

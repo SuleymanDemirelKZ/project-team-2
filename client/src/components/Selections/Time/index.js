@@ -13,6 +13,12 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
   const handleTimeClick = (time) => {
     setSelectedTime(time);
   };
+
+    const handleBackClick = () =>
+    {
+      history.push("/booking")
+    }
+
   const handleNextClick = () => {
     console.log('Next button clicked, selected time is:', selectedTime);
     onTimeSlotChange(selectedTime)
@@ -20,7 +26,11 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
   };
 
   return (
-    <Box gap={2}>
+    <Box gap={2} sx={{ 
+      boxShadow: '0px 5px 5px rgba(0, 0, 0, 0.1)', 
+      borderRadius: '10px',
+      backgroundColor: '#fff'
+    }}>
       <Grid spacing={2}>
 
       
@@ -32,21 +42,31 @@ const TimeSelection = ({times, onTimeSlotChange}) => {
           disabled={timeSlot.booked}
           style={{ 
             margin: "10px",
-            backgroundColor: selectedTime === timeSlot ? 'blue' 
-                            : timeSlot.booked ? 'gray' : 'green' 
+            backgroundColor: selectedTime === timeSlot ? 'gray' 
+                            : timeSlot.booked ? 'gray' : '#3E6FF4' 
           }}
         >
-          {timeSlot.time}
+          {timeSlot.time.substring(0, 5)}
         </Button>
       ))}
       </Grid>
-      <Button
+      
+      <Button 
+        variant="contained"
+        onClick={handleBackClick}
+        
+      >
+        Назад
+      </Button>
+      <Button sx = {{margin: "0 50px"}}
         variant="contained"
         onClick={handleNextClick}
         disabled={!selectedTime}
       >
         Дальше
       </Button>
+   
+     
       
     </Box>
 
