@@ -4,6 +4,7 @@ import { styled } from '@mui/system';
 import logo from './assets/2.png'
 import carImage from './assets/1.png'
 import avtoDromImage from './assets/avtodrom.png'
+import {Link} from 'react-router-dom'
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   marginBottom: `${theme.spacing(4)}px`,
 }));
@@ -79,7 +80,7 @@ const Home = () => {
             <Typography sx={{ color: 'rgb(2, 13, 68)' }} variant="h6" gutterBottom>→ Выберите подходящеe время и дату онлайн.</Typography>
           <Typography  sx={{ color: 'rgb(2, 13, 68)' }} variant="h6" gutterBottom>→ Осы жерге быр сөйлем жазу керек</Typography>
           <Grid item sx={{ margin : "50px 0 " }}>
-          <Button variant="contained" color="primary"  to="/booking">Записаться</Button>
+          <Button variant="contained" color="primary" component={Link} to="/booking">Записаться</Button>
           </Grid>
          </Grid>
       <Grid item xs={12} md={6}>
