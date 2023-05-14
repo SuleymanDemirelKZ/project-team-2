@@ -78,7 +78,7 @@ const Home = () => {
          <Typography sx={{ color: 'rgb(2, 13, 68)' }} variant="h4" gutterBottom>Запись на Вождение 2023</Typography>
           <Typography sx={{ color: 'rgb(2, 13, 68)' }} variant="h6" gutterBottom>→ Легко и быстро зарегистрироваться на сдачу вождения.</Typography>
             <Typography sx={{ color: 'rgb(2, 13, 68)' }} variant="h6" gutterBottom>→ Выберите подходящеe время и дату онлайн.</Typography>
-          <Typography  sx={{ color: 'rgb(2, 13, 68)' }} variant="h6" gutterBottom>→ Осы жерге быр сөйлем жазу керек</Typography>
+          <Typography  sx={{ color: 'rgb(2, 13, 68)' }} variant="h6" gutterBottom>→ Бронируйте место для сдачи экзамена по вождению, используя наше удобное мобильное приложение.</Typography>
           <Grid item sx={{ margin : "50px 0 " }}>
           <Button variant="contained" color="primary" component={Link} to="/booking">Записаться</Button>
           </Grid>

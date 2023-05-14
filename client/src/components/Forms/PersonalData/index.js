@@ -19,14 +19,14 @@ const PersonalDataForm = ({ onSubmit }) => {
     <form onSubmit={handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextField
-          label="Name"
+          label="Имя"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           variant="outlined"
         />
         <TextField
-          label="Email"
+          label="Электронная Почта"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -34,7 +34,7 @@ const PersonalDataForm = ({ onSubmit }) => {
         />
         {/* Add more fields as needed */}
         <Button type="submit" variant="contained">
-          Submit
+          Бронировать
         </Button>
       </Box>
     </form>
