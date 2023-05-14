@@ -1,0 +1,25 @@
+.App-header {
+    height: 60px; /* Adjust this to change the height of the header */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #282c34;
+  }
+  
+  .App-logo {
+    height: 40px; /* Adjust this to change the size of the logo */
+  }
+  
+  .content {
+    height: 100vh; /* This will make each content section the height of the viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .content img {
+    width: 80%; /* This will make the image take up 80% of the width of the content section */
+    max-height: 80vh; /* This will prevent the image from being taller than 80% of the viewport height */
+  }
+  
